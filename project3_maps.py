@@ -162,7 +162,7 @@ class Nodes:
                 self.peers.append((connection, (self.host, port),port))
                 self.network_join(connection)
                 #starting thread to handle incoming messages from this connection
-            # threading.Thread(target=self.handle_msgs, args=(connection,)).start()  
+                threading.Thread(target=self.handle_msgs, args=(connection,)).start()  
         else:
             print("Connection unauthorised")
             connection.close()      
