@@ -159,7 +159,7 @@ class Nodes:
                 threading.Thread(target=self.handle_msgs, args=(connection,)).start()
             else:
                 #new node, adding peer to list and requesting info about other nodes
-                self.peers.append((connection, (self.host, port),port))
+                self.peers.append((connection, (host, port),port))
                 self.network_join(connection)
                 #starting thread to handle incoming messages from this connection
                 threading.Thread(target=self.handle_msgs, args=(connection,)).start()  
