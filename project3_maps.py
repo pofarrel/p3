@@ -321,8 +321,8 @@ def map_divider():
     nums = (["1"]+["2"]+["3"]+["4"]+["5"] + ["6"]+["7"]+["8"]+["9"]+["10"])
     with open('dividedmap.txt', 'a+') as f:
         f.write("{}, {}, {},".format("block", "latitude", "longitude"))
-        for i in range(5):   
-            for j in range(5):
+        for i in range(10):   
+            for j in range(10):
                 f.write("\n{}{}, {}, {},".format(alpha[i], nums[j], mapped2[i][j], mapped2[i][j+1]))
 
 
