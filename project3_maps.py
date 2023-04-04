@@ -188,7 +188,8 @@ class Nodes:
             while True:
                 #receving peers 1 by 1
                 #should be in form of (ip,port)
-                data = connection.recv().decode()
+                
+                data = connection.recv(1024).decode()
                 print("received: %s"%data)
                 if data and data == 'Just me':
                     connection.send("received".encode())
