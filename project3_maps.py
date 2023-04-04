@@ -148,12 +148,13 @@ class Nodes:
                 message += "Not new"
                 connection.send(message.encode())
                 self.peers.append((connection, (self.host, port),port))
+                threading.Thread(target=self.handle_msgs, args=(connection,)).start()
             else:
                 #new node, adding peer to list and requesting info about other nodes
                 self.peers.append((connection, (self.host, port),port))
                 self.network_join(connection)
                 #starting thread to handle incoming messages from this connection
-            threading.Thread(target=self.handle_msgs, args=(connection,)).start()  
+            # threading.Thread(target=self.handle_msgs, args=(connection,)).start()  
         else:
             print("Connection unauthorised")
             connection.close()      
@@ -195,11 +196,8 @@ class Nodes:
                     connection.send("received".encode())
                     if new_peers:
                         for peer in new_peers:
-                            try:
-                                self.connect_nodes(int(peer[2]),peer[0]) 
-                                print("attempting connection with %s" %peer[2])
-                            except:
-                                print("failed" )
+                            self.connect_nodes(int(peer[2]),peer[0]) 
+                            # threading.Thread(target=self.handle_msgs, args=(connection,)).start()
                     self.recv_map(connection)
                     break
                     
@@ -222,6 +220,8 @@ class Nodes:
         with open("dividedmap.txt", "w") as map2:
             map2.write(write)
             print("received remaining blocks, stored in file divided.txt")
+        for peer in self.peers:
+            threading.Thread(target=self.handle_msgs, args=(peer[0],)).start()
                  
 
     #send message to specific node
