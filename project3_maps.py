@@ -81,8 +81,10 @@ class Nodes:
                     #sending all peers to new node
                     #only need to send ip and port
                     message = str(peer[1][0]) + " " + str(peer[1][1]) + " " + str(peer[2]) + " "
-
+                    print("Sending peer: " + message)                       
                     connection.send(message.encode())
+                    response = connection.recv(1024).decode()
+                connection.send("end".encode())
                 print("Sent peers to new node")
             else:
                 print("No peers to send")
@@ -185,8 +187,8 @@ class Nodes:
             while True:
                 #receving peers 1 by 1
                 #should be in form of (ip,port)
-                data = connection.recv(1024).decode()
-            
+                data = connection.recv().decode()
+
                 if data and data == 'Just me':
                     connection.send("received".encode())
                     print('No other nodes in network')
@@ -194,15 +196,20 @@ class Nodes:
                     break
                 
                 elif data:
-                    data = data.split()
-                    for i in range(len(data)):
-                        #want in form (ip,port,nodenum)) 
-                        new_peers_info.append(data[i])
-                        if((i+1)%3 == 0):
-                            new_peers.append(new_peers_info)
-                            print('found peer: "%s"' %new_peers_info) 
-                            new_peers_info = list()
-                    connection.send("received".encode())
+                    while True:
+                        if data == "end":
+                            connection.send("received".encode())
+                            break
+                        data = data.split()
+                        for i in range(len(data)):
+                            #want in form (ip,port,nodenum)) 
+                            new_peers_info.append(data[i])
+                            if((i+1)%3 == 0):
+                                new_peers.append(new_peers_info)
+                                print('found peer: "%s"' %new_peers_info) 
+                                new_peers_info = list()
+                        connection.send("received".encode())
+                        data = connection.recv(1024).decode()
                     if new_peers:
                         for peer in new_peers:
                             self.connect_nodes(int(peer[2]),peer[0]) 
