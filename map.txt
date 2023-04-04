@@ -1,0 +1,5 @@
+kherson, latitude, longitude
+botleft, 32.074822,46.406928, 
+topleft, 32.074822,46.848291, 
+botright, 33.121270,46.406928, 
+topright, 33.121270,46.848291, 
