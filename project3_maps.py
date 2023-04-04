@@ -14,7 +14,6 @@ global num_nodes
 def hash_password(password):
     return hashlib.sha256(password.encode()).hexdigest()
 
-    
 class Nodes:
         #initialising client node, automatically done when node created 
     def  __init__(self,port,password):
@@ -29,6 +28,7 @@ class Nodes:
         #assigning random starting coordinates
         self.xcoord = random.uniform(32.074822,33.121270)
         self.ycoord = random.uniform(46.406928,46.848291)
+        self.timer_pause = 0
         threading.Thread(target=self.timer_func, args=()).start()
         print("starting Node %s \n" %num_nodes)
         print("Starting coordinates: " + str(self.xcoord) + " " + str(self.ycoord))
@@ -36,8 +36,11 @@ class Nodes:
     def timer_func(self):
         #to have peers completing blocks after 5 seconds
         while True:
+            
             time.sleep(5)
-            self.next_block()
+            if self.timer_pause == 0:
+                self.next_block()
+            
         
     #function to allow nodes to connect 
     def listen_for_nodes(self):
@@ -69,6 +72,7 @@ class Nodes:
 
     def handle_new_node(self,connection):
             #handling new node connecting to network 
+            self.timer_pause  =1
             if self.peers:
                 for peer in self.peers:
                     #sending all peers to new node
@@ -95,7 +99,8 @@ class Nodes:
                             print("Error sending map coordinates")
                             break
                     connection.send("end".encode())
-                    print("Sent remaining blocks")          
+                    print("Sent remaining blocks")  
+            self.timer_pause = 0    
             
     def handle_msgs(self,connection):
             #runs when message comes in
@@ -163,6 +168,7 @@ class Nodes:
     def network_join(self,connection):
         #when a new node joins the network, it requests informatino to make connection with other nodes
             #New node is keyword
+            self.timer_pause =1
             message = str(self.address[1]) + " " #port number I am listening on
             message += "New node "
             connection.send(message.encode())
@@ -222,6 +228,7 @@ class Nodes:
             print("received remaining blocks, stored in file divided.txt")
         for peer in self.peers:
             threading.Thread(target=self.handle_msgs, args=(peer[0],)).start()
+        self.timer_pause = 0
                  
 
     #send message to specific node
