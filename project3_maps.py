@@ -37,7 +37,7 @@ class Nodes:
         #to have peers completing blocks after 5 seconds
         while True:
             
-            time.sleep(5)
+            time.sleep(10)
             if self.timer_pause == 0:
                 self.next_block()
             
