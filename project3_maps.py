@@ -196,8 +196,8 @@ class Nodes:
                     if new_peers:
                         for peer in new_peers:
                             try:
-                            self.connect_nodes(int(peer[2]),peer[0]) 
-                            print("attempting connection with %s" %peer[2])
+                                self.connect_nodes(int(peer[2]),peer[0]) 
+                                print("attempting connection with %s" %peer[2])
                             except:
                                 print("failed)
                     self.recv_map(connection)
