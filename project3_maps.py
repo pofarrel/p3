@@ -199,7 +199,7 @@ class Nodes:
                                 self.connect_nodes(int(peer[2]),peer[0]) 
                                 print("attempting connection with %s" %peer[2])
                             except:
-                                print("failed)
+                                print("failed" )
                     self.recv_map(connection)
                     break
                     
