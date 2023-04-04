@@ -317,13 +317,13 @@ def map_divider():
 
     with open("dividedmap.txt",'w') as map:
         pass
-    alpha = (["A"]+["B"]+["C"]+["D"]+["E"])
-    nums = (["1"]+["2"]+["3"]+["4"]+["5"])
+    alpha = (["A"]+["B"]+["C"]+["D"]+["E"] + ["F"]+["G"]+["H"]+["I"]+["J"])
+    nums = (["1"]+["2"]+["3"]+["4"]+["5"] + ["6"]+["7"]+["8"]+["9"]+["10"])
     with open('dividedmap.txt', 'a+') as f:
         f.write("{}, {}, {},".format("block", "latitude", "longitude"))
         for i in range(5):   
             for j in range(5):
-                f.write("\n{}{}, {}, {},".format(alpha[i], nums[j], mapped2[2*i][2*j], mapped2[2*i][2*j+1]))
+                f.write("\n{}{}, {}, {},".format(alpha[i], nums[j], mapped2[i][j], mapped2[i][j+1]))
 
 
 if __name__ == '__main__':
