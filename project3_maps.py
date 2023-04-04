@@ -48,6 +48,8 @@ class Nodes:
         self.server.listen(4)
         while True:
             connection,addr = self.server.accept() 
+            
+            
             received_password = connection.recv(1024).decode()
             if received_password == self.password:
                 connection.send(b'OK')     
@@ -153,7 +155,7 @@ class Nodes:
                 #not a new node, adding peer to list
                 message += "Not new"
                 connection.send(message.encode())
-                self.peers.append((connection, (self.host, port),port))
+                self.peers.append((connection, (host, port),port))
                 threading.Thread(target=self.handle_msgs, args=(connection,)).start()
             else:
                 #new node, adding peer to list and requesting info about other nodes
