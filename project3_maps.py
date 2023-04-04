@@ -62,11 +62,11 @@ class Nodes:
                     print("New node found, sending peers")
                     self.handle_new_node(connection)
                 self.peers.append((connection,addr,port_num))
-                self.next_block() #example
+                threading.Thread(target=self.handle_msgs, args=(connection,)).start()
                 # self.connect_nodes(address[1])  #need connection to go both ways 
                 # connection.send(str(self.num).encode())
                 #want to start another thread to handle incoming msgs, putting here so it starts when connectino made
-                threading.Thread(target=self.handle_msgs, args=(connection,)).start()
+                
             else:
                 connection.send(b'INVALID')
                 print("Attempted unauthorised connection, closing connection")
