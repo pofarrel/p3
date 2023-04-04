@@ -30,6 +30,7 @@ class Nodes:
         self.ycoord = random.uniform(46.406928,46.848291)
         self.timer_pause = 0
         threading.Thread(target=self.timer_func, args=()).start()
+        threading.Thread(target=self.listen_for_nodes, args=()).start()
         print("starting Node %s \n" %num_nodes)
         print("Starting coordinates: " + str(self.xcoord) + " " + str(self.ycoord))
 
@@ -226,8 +227,7 @@ class Nodes:
         with open("dividedmap.txt", "w") as map2:
             map2.write(write)
             print("received remaining blocks, stored in file divided.txt")
-        for peer in self.peers:
-            threading.Thread(target=self.handle_msgs, args=(peer[0],)).start()
+
         self.timer_pause = 0
                  
 
